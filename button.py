@@ -6,6 +6,7 @@ class button:
     def __init__ (self, card, color, colorOver, maxX, minX, minY, maxY, x, y, xlenght, ylenght, textInput):
         pos_x, pos_y = pygame.mouse.get_pos()
         mb = pygame.mouse.get_pressed()
+        
         #define posição do rectangulo
         self.pos = (pos_x < maxX and pos_x > minX and pos_y > minY and pos_y < maxY)
         self.card = card
@@ -23,6 +24,7 @@ class button:
                 c = colorOver
                 if (mb[0]):
                     c = black
+                    
             pygame.draw.rect(screen, c, (x, y, xlenght, ylenght), 0)
             
                 
@@ -39,19 +41,22 @@ class button:
             self.writeText = screen.blit(self.text,(x+32.5,y+3.5))
 
 
+
+
 class geoForm:
 
     def __init__(self, forms, colors, x, y, pos):
       
+        self.forms = forms
         self.colors = colors
         self.pos = pos
-        self.forms = forms
+    
         mb = pygame.mouse.get_pressed()
  
         
         if (self.pos):
             if (mb[0]):
-                #criar as formas e dá-lhes cores
+                #cria as formas(consoante a lista criada) e dá-lhes cores
                 if (forms == 'square'):
                     pygame.draw.rect(screen, colors, (x, y, 50, 50), 0)
                 elif (forms == 'triangle'):
