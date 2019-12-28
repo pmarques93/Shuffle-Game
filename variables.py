@@ -32,20 +32,16 @@ global xlen, ylen
 xlen, ylen = 25, 50
 
 ##############################################
-#funcoes temp
-
-def compare(sq1, sq2):
-    if (sq1 == sq2):
-        print ("test compare")
 
 
-def twoClicks(sq1, sq2):
-    firstClick = False
-    secondClick = False
+##############   funcoes    ##################
 
-    if (sq1.pos):
-        if (mb[0]):
-            firstClick = True
+def compare(Form1, Form2):
+    if (Form1.forms == Form2.forms) and (Form1.colors == Form2.colors):
+        return True
+    else:
+        return False
+    
             
 
 
