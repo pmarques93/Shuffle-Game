@@ -9,29 +9,34 @@ class Card:
         self.xlenght = xlenght
         self.ylenght = ylenght
         self.isClicked = False
+        self.isClickable = True
+
+    def isAt(self, mouseX, mouseY):
+        self.mouseX = mouseX
+        self.mouseY = mouseY
+        posicao = mouseX > self.x and mouseX < self.x + self.xlenght and mouseY > self.y and mouseY < self.y + self.ylenght
+        return posicao
         
-    def draw (self, screen, color, colorOver, border):
+    def draw (self, screen, color, border):
         self.screen = screen
         self.border = border
-    
-        c = color
-        if self.pos:
-            c = colorOver
-        pygame.draw.rect(self.screen, c, (self.x, self.y, self.xlenght, self.ylenght,), self.border)
-        
-        
-
-    def form (self, screen, form, color, x, y):
-        self.form = form
         self.color = color
+        pygame.draw.rect(self.screen, color, (self.x, self.y, self.xlenght, self.ylenght), self.border)
+
+    def form (self, screen, geoForm, geoColor, x, y):
+        self.geoForm = geoForm
+        self.geoColor = geoColor
         self.screen = screen
-        if (form == 'square'):
-            pygame.draw.rect(self.screen, self.color, (x, y, 50, 50), 0)
-        elif (form == 'triangle'):
-            pygame.draw.polygon(self.screen, self.color, [(x+23.5, y-5), (x-5, y+45), (x+50, y+45)], 0)
-        elif (form == 'circle'):
-            pygame.draw.circle(self.screen, self.color, (25+x, 25+y), 30, 0)
-    
+        if (geoForm == 'square'):
+            pygame.draw.rect(self.screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.rect(self.screen, self.geoColor, (x, y, 50, 50), 0)
+        elif (geoForm == 'triangle'):
+            pygame.draw.rect(self.screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.polygon(self.screen, self.geoColor, [(x+25, y), (x, y+50), (x+50, y+50)], 0)
+        elif (geoForm == 'circle'):
+            pygame.draw.rect(self.screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.circle(self.screen, self.geoColor, (25+x, 25+y), 30, 0)
+
 
 class Text:
     def __init__ (self, x, y, xlenght, ylenght):
@@ -42,18 +47,27 @@ class Text:
         self.xlenght = xlenght
         self.ylenght = ylenght
         self.isClicked = False
+
+    def isAt(self, mouseX, mouseY):
+        self.mouseX = mouseX
+        self.mouseY = mouseY
+        posicao = mouseX > self.x and mouseX < self.x + self.xlenght and mouseY > self.y and mouseY < self.y + self.ylenght
+        return posicao
         
-    def draw (self, screen, color, colorOver, border, textInput):
-        myFont = pygame.font.SysFont('Arial', 23)
+    def draw (self, screen, color, border, textInput):
+        myFont = pygame.font.Font(pygame.font.get_default_font(), 21)
         self.screen = screen
         self.border = border
         self.textInput = textInput
+        self.color = color
     
-        c = color
-        if self.pos:
-            c = colorOver
-        pygame.draw.rect(self.screen, c, (self.x, self.y, self.xlenght, self.ylenght,), self.border)
-        self.text = myFont.render(self.textInput, True, c)
-        self.writeText = screen.blit(self.text,(self.x+32.5,self.y+3.5))
+        pygame.draw.rect(self.screen, color, (self.x, self.y, self.xlenght, self.ylenght,), self.border)
+        self.text = myFont.render(self.textInput, True, color)
+        if textInput == 'Exit':
+            self.writeText = screen.blit(self.text,(self.x+29.5,self.y+5))
+        elif textInput == 'Show All':
+            self.writeText = screen.blit(self.text,(self.x+6,self.y+5))
+        else:
+            self.writeText = screen.blit(self.text,(self.x+32,self.y+5))
 
 

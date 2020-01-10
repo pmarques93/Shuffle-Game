@@ -9,26 +9,19 @@ global x
 
 ################# colors #####################
 
-global white, green, orange, blue, black, yellow
-
 white = (255,255,255)
 green = (0  , 150, 0)
 orange = (255, 140, 0)
 blue = (0, 0, 150)
-black = (0, 0, 0)
+black = (20, 20, 20)
 yellow = (255,255,  0)
+pink = (255,182,193)
+greenForm = (120,211,55)
+selectColor = (0, 255, 200)
 
 ##############################################
 
-##############   funcoes    ##################
 
-def compare(form1, form2):
-    if (form1 == form2):
-        print (" --- Equal ---")
-        return True
-    else:
-        print (" --- Not Equal ---")
-        return False
 
 
     
