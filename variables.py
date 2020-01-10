@@ -20,6 +20,7 @@ yellow = (255,255,  0)
 pink = (255,182,193)
 greenForm = (120,211,55)
 selectColor = (0, 255, 200)
+beingClicked = (0, 200, 140)
 
 ##############################################
 
@@ -38,6 +39,8 @@ lastClickedFont = pygame.font.Font(pygame.font.get_default_font(), 16)
 victoryFont = pygame.font.Font(pygame.font.get_default_font(), 45)
 #imagens
 image = pygame.image.load("shuffle.png")
+#songs
+buttonSound = pygame.mixer.Sound("button sound.ogg")
 
 
     

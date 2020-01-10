@@ -6,19 +6,37 @@ from variables import *
 
 def menuScreen():
     global x
+    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.load('menu song.ogg')
+    pygame.mixer.music.play(-1)
     #cria os botoes de texto 
     level1 = Text(450, 280, 100, 30)
     level2 = Text(450, 340, 100, 30)
     level3 = Text(450, 400, 100, 30)
     leave = Text(450, 500, 100, 30)
+
+    checkFirstLoop = 0 #so para detetar se é o primeiro loop do jogo
     
     x = 0
     while(x == 0):
         #limpa ecra, e coloca imagem
         screen.fill((20,20,20))
-        screen.blit(image, (100, 0))
-        #define variavel para quando o rato e pressed
+        #so vai executar este if primeira ve de cada codigo
         mb = pygame.mouse.get_pressed()
+
+        if checkFirstLoop == 0:
+            screen.blit(image, (100, 150))
+            pygame.display.flip()
+            time.sleep(3)
+            for i in range(150):
+                screen.blit(image, (100, 150-i))
+                pygame.display.flip()
+                screen.fill((20,20,20))
+            checkFirstLoop += 1
+
+        screen.blit(image, (100, 0))
+
+        #define x e y do rato
         pos_x, pos_y = pygame.mouse.get_pos()
         #desenha os botoes
         if level1.isAt (pos_x, pos_y):
@@ -41,7 +59,7 @@ def menuScreen():
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 exit()
-            if (mb[0]):
+            if event.type == pygame.MOUSEBUTTONUP:
                 if level1.isAt(pos_x, pos_y):   #firstLevelScreen
                     x = 1
                 if level2.isAt(pos_x, pos_y):  #secondLevelScreen
@@ -69,7 +87,22 @@ def gamePlay():
     helpBonus = False
     helpsLeft = 3
 
-    if (x == 1):    # level1 formas e cards
+    #lista para saber qual foi a última carta clicked
+    allClicked = []
+    if len(allClicked) > 4:
+        allClicked.pop(0)
+        allClicked.pop(1)
+
+    #botão help
+    helpCard = Text(875, 550, 105, 30)
+
+    #cria botao exit
+    leave = Text(20, 550, 100, 30)  
+
+    if (x == 1):    #level 1 formas e cards
+        pygame.mixer.music.set_volume(0.6)
+        pygame.mixer.music.load('level 1 song.ogg')
+        pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 25, 50
         #####################    Formas e cores por trás das cartas  #####################
@@ -81,15 +114,6 @@ def gamePlay():
         random.shuffle(colors)
         random.shuffle(forms)
         ##################################################################################
-
-        #lista para saber qual foi a última carta clicked
-        allClicked = []
-
-        #botão help
-        helpCard = Text(875, 550, 105, 30)
-
-        #cria botao leave
-        leave = Text(20, 550, 100, 30)  
 
         ##################################################################################
         ##########################  cria as cartas e formas    ###########################
@@ -139,6 +163,9 @@ def gamePlay():
             ]
 
     if (x == 2):    # level2 formas e cards
+        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.load('level 2 song.ogg')
+        pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 10, 30
 
@@ -153,15 +180,6 @@ def gamePlay():
         random.shuffle(forms)
         random.shuffle(forms2)
         ##################################################################################
-
-        #lista para saber qual foi a última carta clicked
-        allClicked = []
-
-        #botão help
-        helpCard = Text(875, 550, 105, 30)
-
-        #cria botao leave
-        leave = Text(20, 550, 100, 30)  
 
         ##################################################################################
         ##########################  cria as cartas e formas    ###########################
@@ -224,6 +242,9 @@ def gamePlay():
             ]
 
     if (x == 3):    # level3 formas e cards
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.load('level 3 song.ogg')
+        pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 10, 30
 
@@ -236,15 +257,6 @@ def gamePlay():
         random.shuffle(colors)
         random.shuffle(forms)
         ##################################################################################
-
-        #lista para saber qual foi a última carta clicked
-        allClicked = []
-
-        #botão help
-        helpCard = Text(875, 550, 105, 30)
-
-        #cria botao leave
-        leave = Text(20, 550, 100, 30)
 
         ##################################################################################
         ##########################  cria as cartas e formas    ###########################
@@ -322,17 +334,20 @@ def gamePlay():
     while(gameOn):
         screen.fill((20,20,20))
         #define variavel para quando o rato é pressed, define posicao x e y do rato
-        mb = pygame.mouse.get_pressed()
         pos_x, pos_y = pygame.mouse.get_pos()
 
-        #para todos os botoes que forem carregados
+
+        ########################### clicks do rato ##########################
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 exit()
             for card in cardList:
                 if card.isAt(pos_x, pos_y):
                     if card.isClickable:
-                        if mb[0]:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            card.beingClicked = True
+                        if event.type == pygame.MOUSEBUTTONUP:
+                            buttonSound.play()
                             card.isClicked = True
                             card.isClickable = False
                             tempCount += 1  #para comparar clicked cards
@@ -341,22 +356,22 @@ def gamePlay():
                     else:
                         pass    #se ja foi clicked nao faz nada
             if leave.isAt(pos_x, pos_y):
-                if mb[0]:
+                if event.type == pygame.MOUSEBUTTONUP:
                     gameOn = False
                     x = 0
             if helpCard.isAt(pos_x, pos_y):
-                if mb[0] and helpsLeft > 0:
+                if event.type == pygame.MOUSEBUTTONUP and helpsLeft > 0:
                     helpBonus = True
                     helpsLeft -= 1
-
-
-        ################### desenha exit button e score ###################
+        ########################## clicks do rato ###########################
+        
+        ##################### desenha exit button e score ####################
         leave.draw(screen, yellow, 1, 'Exit')   #desenha botao exit
         text = myFont.render("Score: " + str(score), True, yellow) #cria score
         screen.blit(text,(20,20))   #desenha score
         if leave.isAt(pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
-        ################### desenha exit button e score ###################
+        ##################### desenha exit button e score ####################
 
         ################### desenha a última forma clicked ###################
         if (len(allClicked)) > 0:
@@ -392,10 +407,12 @@ def gamePlay():
         if score < 0:
             score = 0
         #mensagem de vitoria
-        if len(cardList) == 0:
+        if len(cardList) < 2:
+            for card in cardList:
+                cardList.remove(card)
             text = victoryFont.render("CONGRATULATIONS", True, yellow)
             risingScore = victoryFont.render("Score: " + str(score), True, yellow)
-            screen.blit(risingScore, (380, 375))
+            screen.blit(risingScore, (380, 325))
             screen.blit(text,(270,275))
         #######################   score + victory    ########################
 
@@ -405,6 +422,10 @@ def gamePlay():
                 card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
                 if card.isAt(pos_x, pos_y):
                     card.draw(screen, selectColor, 0) # desenha carta com outra cor
+                    if card.beingClicked:
+                        card.draw(screen, beingClicked, 0)
+                else:
+                    card.beingClicked = False
 
             if card.isClicked == True:  # se carta ja foi selecionada
                 card.form(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen) #desenha forma
@@ -417,9 +438,8 @@ def gamePlay():
                 pygame.display.flip()
                 pygame.time.delay(1000)
                 for card in cardList:
-                    if card.isClickable == False:   # para as cartas selecionadas na lista
+                    if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a umas das comparadas
                         cardList.remove(card)             
-
                 score += 100    #adiciona 100 score, aumenta o score count
                 scoreCount += 1        
                 tempCount = 0
@@ -427,7 +447,7 @@ def gamePlay():
                 pygame.display.flip()
                 pygame.time.delay(1000)
                 for card in cardList:   # se nao eram iguais, vai fazer "reset" às cartas
-                    if card.isClickable == False:
+                    if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a uma das cmparadas
                         card.isClicked = False
                         card.isClickable = True
                         ##se o jogador ja pontuou, tira +20 score cada erro, remove formas da clickedList
