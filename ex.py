@@ -22,35 +22,52 @@ def menuScreen():
     myFont = pygame.font.Font(pygame.font.get_default_font(), 23)
     image = pygame.image.load("shuffle.png")
 
+    #cria os botoes de texto 
+    level1 = Text(450, 280, 100, 30)
+    level2 = Text(450, 340, 100, 30)
+    level3 = Text(450, 400, 100, 30)
+    leave = Text(450, 500, 100, 30)
+    
+
     while(x == 0):
         #limpa ecra, e coloca imagem
         screen.fill((20,20,20))
         screen.blit(image, (100, 0))
         #define variavel para quando o rato e pressed
         mb = pygame.mouse.get_pressed()
+        pos_x, pos_y = pygame.mouse.get_pos()
 
-        #cria e desenha os botoes de texto 
-        level1 = Text(450, 280, 100, 30)
-        level1.draw(screen, yellow, 1, '4x3')
-        level2 = Text(450, 340, 100, 30)
-        level2.draw(screen, yellow, 1, '4x4')
-        level3 = Text(450, 400, 100, 30)
-        level3.draw(screen, yellow, 1, '5x4')
-        leave = Text(450, 500, 100, 30)
-        leave.draw(screen, yellow, 1, 'Exit')
+        
+        if level1.isAt (pos_x, pos_y):
+            level1.draw(screen, selectColor, 1, '4x3')
+        else:
+            level1.draw(screen, yellow, 1, '4x3')
+        if level2.isAt (pos_x, pos_y):
+            level2.draw(screen, selectColor, 1, '4x4')
+        else:
+            level2.draw(screen, yellow, 1, '4x4')
+        if level3.isAt (pos_x, pos_y):
+            level3.draw(screen, selectColor, 1, '5x4')
+        else:
+            level3.draw(screen, yellow, 1, '5x4')
+        if leave.isAt (pos_x, pos_y):
+            leave.draw(screen, selectColor, 1, 'Exit')
+        else:
+            leave.draw(screen, yellow, 1, 'Exit')
+        
 
         #quando os botoes são clicked
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 exit()
             if (mb[0]):
-                if (level1.pos):   #firstLevelScreen
+                if level1.isAt(pos_x, pos_y):   #firstLevelScreen
                     x = 1
-                if (level2.pos):   #secondLevelScreen
+                if level2.isAt(pos_x, pos_y):  #secondLevelScreen
                     x = 2
-                if (level3.pos):   #thirdLevelScreen
+                if level3.isAt(pos_x, pos_y):   #thirdLevelScreen
                     x = 3
-                if (leave.pos):
+                if leave.isAt(pos_x, pos_y):
                     exit()
 
         pygame.display.flip()
@@ -75,6 +92,7 @@ def firstLevel():
 
     #helpBonus var
     helpBonus = False
+    helpsLeft = 3
 
     #variavel que define metade do tamanho das cartas
     xlen, ylen = 25, 50
@@ -89,14 +107,14 @@ def firstLevel():
     random.shuffle(forms)
     ##################################################################################
 
-    #lista em que vão ser adicionadas clickedCards, que vai servir para  comparar se as cards são iguais
-    clickedList = []
-
     #lista para saber qual foi a última carta clicked
     allClicked = []
 
     #botão help
-    helpCard = Text(880, 550, 105, 30)
+    helpCard = Text(875, 550, 105, 30)
+
+    #cria botao leave
+    leave = Text(20, 550, 100, 30)  
 
     ##################################################################################
     ##########################  cria as cartas e formas    ###########################
@@ -142,7 +160,7 @@ def firstLevel():
     cardList = [
         card11, card12, card13, card14,
         card21, card22, card23, card24,
-        card31, card32, card33, card34
+        card31, card32, card33, card34,
         ]
 
     while(x == 1):
@@ -151,11 +169,34 @@ def firstLevel():
         mb = pygame.mouse.get_pressed()
         pos_x, pos_y = pygame.mouse.get_pos()
 
+        #para todos os botoes que forem carregados
+        for event in pygame.event.get():
+            if (event.type == pygame.QUIT):
+                exit()
+            for card in cardList:
+                if card.isAt(pos_x, pos_y):
+                    if card.isClickable:
+                        if mb[0]:
+                            card.isClicked = True
+                            card.isClickable = False
+                            tempCount += 1  #para comparar clicked cards
+                            allClicked.append(card)     #adiciona a lista para saber ultimo clickado
+                            
+                    else:
+                        pass    #se ja foi clicked nao faz nada
+            if leave.isAt(pos_x, pos_y):
+                if mb[0]:
+                    x = 0
+            if helpCard.isAt(pos_x, pos_y):
+                if mb[0] and helpsLeft > 0:
+                    helpBonus = True
+                    helpsLeft -= 1
+
+
         ################### desenha exit button e score ###################
-        leave = Text(20, 550, 100, 30)  #cria botao leave
-        leave.draw(screen, yellow, 1, 'Exit')   #desenha
-        text = myFont.render("Score: " + str(score), True, yellow)  #cria score
-        screen.blit(text,(20,20))   #desenha
+        leave.draw(screen, yellow, 1, 'Exit')   #desenha botao exit
+        text = myFont.render("Score: " + str(score), True, yellow) #cria score
+        screen.blit(text,(20,20))   #desenha score
         if leave.isAt(pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
         ################### desenha exit button e score ###################
@@ -165,22 +206,27 @@ def firstLevel():
             lastClicked = lastClickedFont.render("- Last form clicked -", True, yellow)
             screen.blit(lastClicked,(20,250))
             pygame.draw.rect(screen, allClicked[-1].geoColor, (50, 275, 70, 70), 1)
-            card.form(screen, allClicked[-1].geoForm, allClicked[-1].geoColor, 60, 285)
+            last = Card(0, 0, 0, 0)
+            last.form(screen, allClicked[-1].geoForm, allClicked[-1].geoColor, 60, 285)
         ################### desenha a última forma clicked ###################
 
         ############################ help button ############################
         #desenha botao help quando rato ta por cima ou nao
         if helpCard.isAt(pos_x, pos_y):
-            helpCard.draw(screen, selectColor, 1, 'Show All')
+            helpCard.draw(screen, selectColor, 1, 'help')
         else: 
-            helpCard.draw(screen, yellow, 1, 'Show All')     
+            helpCard.draw(screen, yellow, 1, 'help') 
+        helpLeft = myFont.render("Helps Left", True, yellow) #cria texto helps left
+        helpLeftNum = myFont.render(str(helpsLeft), True, yellow) #cria texto helps left
+        screen.blit(helpLeft,(870, 495))   #desenha helps left  
+        screen.blit(helpLeftNum,(925, 522))   #desenha helps left     
         #botao help ao ser carregado
         if helpBonus:
-            screen.fill((20, 20, 20))    
             for card in cardList:
+                card.draw(screen, black, 0)
                 card.form(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen)
                 pygame.display.flip()
-                pygame.time.delay(175)
+                pygame.time.delay(150)
                 helpBonus = False
         ############################ help button ############################
 
@@ -188,107 +234,52 @@ def firstLevel():
         #score nao pode ser negativo     
         if score < 0:
             score = 0
-        '''
         #mensagem de vitoria
-        if len(tempList) == len(cardList):
+        if len(cardList) == 0:
             text = victoryFont.render("CONGRATULATIONS", True, yellow)
+            risingScore = victoryFont.render("Score: " + str(score), True, yellow)
+            screen.blit(risingScore, (380, 375))
             screen.blit(text,(270,275))
-        '''
         #######################   score + victory    ########################
 
         ####################   desenha cartas formas    #####################
         for card in cardList:   #para todas as cartas na clicked list
-            if card.isClicked == False: #se nao foi clickada
-                #card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
-                card.form(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen) #desenha forma
-
-                if card.isAt(pos_x, pos_y): #se rato tiver por cima
-                    card.draw(screen, selectColor, 0) # desenha carta de branco
+            if card.isClicked == False:
+                card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
+                if card.isAt(pos_x, pos_y):
+                    card.draw(screen, selectColor, 0) # desenha carta com outra or
 
             if card.isClicked == True:  # se carta ja foi selecionada for true
                 card.form(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen) #desenha forma
                 card.isClickable = False
-                pass
         ####################   desenha cartas formas    #####################
         
         #################   compara as 2 cartas clicked    ##################
-        if tempCount % 2 == 0 and tempCount != 0: #se tempcount for par ( selecionadas de 2 em 2)
-            if compare(allClicked[-1], allClicked[-2]):
+        if tempCount == 2:
+            if compare(allClicked[-1], allClicked[-2]): #compara geo form e geocolor
+                pygame.display.flip()
+                pygame.time.delay(1000)
                 for card in cardList:
-                    if card.isClickable == False:
-                        cardList.remove(card)
+                    if card.isClickable == False:   # para as cartas selecionadas na lista
+                        cardList.remove(card)             
+
+                score += 100    #adiciona 100 score, aumenta o score count
+                scoreCount += 1        
+                tempCount = 0
             else:
-                for card in cardList:
+                pygame.display.flip()
+                pygame.time.delay(1000)
+                for card in cardList:   # se nao eram iguais, vai fazer "reset" às cartas
                     if card.isClickable == False:
                         card.isClicked = False
                         card.isClickable = True
-        #################   compara as 2 cartas clicked    ##################        
-
-
-        #para todos os botoes que forem carregados
-        for event in pygame.event.get():
-            if (event.type == pygame.QUIT):
-                exit()
-            for card in cardList:   #para clickar nas cartas
-                if card.isAt(pos_x, pos_y):     # se tiver na posicao da carta
-                    if card.isClickable:
-                        if mb[0]:   #se clickar
-                            card.isClicked = True
-                            card.isClickable = False
-                            tempCount += 1
-                            allClicked.append(card)     #adiciona a lista para saber ultimo clickado
-                            #clickedList.append(card)    #adiciona a lista para ser comparado
-                    else:
-                        pass
-            if leave.isAt(pos_x, pos_y):
-                if mb[0]:
-                    x = 0
-            if helpCard.isAt(pos_x, pos_y):
-                if mb[0]:
-                    helpBonus = True   
-                                   
-
-
-
-        '''
-        #todas as cartas na lista de cartas clicked
-        for card in clickedList:
-            #desenha forma
-            card.form(screen, clickedList[0].geoForm, clickedList[0].geoColor, clickedList[0].x+xlen, clickedList[0].y+ylen)
-
-            compareCount = len(clickedList)
-            if compareCount == 2:
-
+                        ##se o jogador ja pontuou, tira +20 score cada erro, remove formas da clickedList
+                if scoreCount > 0: # se ja pontuou antes
+                    scoreFail += 20 # todas as vezes que falha perde +20
+                    score -= scoreFail
+                tempCount = 0
                 
-                #sao comparadas com a função compare()           
-                if (compare(clickedList[0], clickedList[1])):
-
-                    #espera 1500ms and mostra o resultado
-                    pygame.display.flip()
-                    pygame.time.delay(1500)
-                    #adiciona 100 score, aumenta o score count, remove formas da clickedList
-                    score += 100
-                    scoreCount += 1
-
-                    
-
-                    ##############
-                    #remove da lista de cartas clickadas
-                    clickedList.pop()
-                    clickedList.pop()
-
-                    
-                else:
-                    #espera 1500ms and mostra o resultado
-                    pygame.display.flip()
-                    pygame.time.delay(1500)
-                    ##se o jogador ja pontuou, tira +20 score cada erro, remove formas da clickedList
-                    if scoreCount > 0:
-                        scoreFail += 20
-                        score -= scoreFail
-                    clickedList.pop()
-                    clickedList.pop()
-        '''
+        #################   compara as 2 cartas clicked    ##################        
 
         pygame.display.flip()
 
