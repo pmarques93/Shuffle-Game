@@ -316,68 +316,74 @@ def gamePlayEasyLevels():   # level 1 - 3
         random.shuffle(colors)
         random.shuffle(forms)
         ##################################################################################
-
+        Pos = [
+            [280, 50], [370, 50], [460, 50], [550, 50], [640, 50],
+            [280, 180], [370, 180], [460, 180], [550, 180], [640, 180],
+            [280, 310], [370, 310], [460, 310], [550, 310], [640, 310],
+            [280, 440], [370, 440], [460, 440], [550, 440], [640, 440],
+        ]
+        random.shuffle(Pos)
         ##################################################################################
         ##########################  cria as cartas e formas    ###########################
-        card11 = Card(280, 50, 70, 110)
-        card11.form(screen, forms[0], colors[4], card11.x+xlen, card11.y+ylen)
+        card11 = Card(Pos[0][0], Pos[0][1], 70, 110)
+        card11.form(screen, forms[0], colors[0], card11.x+xlen, card11.y+ylen)
         ##########
-        card21 = Card(280, 180, 70, 110)
-        card21.form(screen, forms[2], colors[2], card21.x+xlen, card21.y+ylen)
+        card21 = Card(Pos[1][0], Pos[1][1], 70, 110)
+        card21.form(screen, forms[1], colors[0], card21.x+xlen, card21.y+ylen)
         ##########
-        card31 = Card(280, 310, 70, 110)
-        card31.form(screen, forms[2], colors[4], card31.x+xlen, card31.y+ylen)
+        card31 = Card(Pos[2][0], Pos[2][1], 70, 110)
+        card31.form(screen, forms[2], colors[0], card31.x+xlen, card31.y+ylen)
         ##########
-        card41 = Card(280, 440, 70, 110)
-        card41.form(screen, forms[3], colors[3], card41.x+xlen, card41.y+ylen)
+        card41 = Card(Pos[3][0], Pos[3][1], 70, 110)
+        card41.form(screen, forms[3], colors[0], card41.x+xlen, card41.y+ylen)
         ##########
-        card12 = Card(370, 50, 70, 110)
-        card12.form(screen, forms[3], colors[0], card12.x+xlen, card12.y+ylen)
+        card12 = Card(Pos[4][0], Pos[4][1], 70, 110)
+        card12.form(screen, forms[0], colors[1], card12.x+xlen, card12.y+ylen)
         ##########
-        card22 = Card(370, 180, 70, 110)
-        card22.form(screen, forms[2], colors[0], card22.x+xlen, card22.y+ylen)
+        card22 = Card(Pos[5][0], Pos[5][1], 70, 110)
+        card22.form(screen, forms[1], colors[1], card22.x+xlen, card22.y+ylen)
         ##########
-        card32 = Card(370, 310, 70, 110)
-        card32.form(screen, forms[3], colors[4], card32.x+xlen, card32.y+ylen)
+        card32 = Card(Pos[6][0], Pos[6][1], 70, 110)
+        card32.form(screen, forms[2], colors[1], card32.x+xlen, card32.y+ylen)
         ##########
-        card42 = Card(370, 440, 70, 110)
-        card42.form(screen, forms[1], colors[2], card42.x+xlen, card42.y+ylen)
+        card42 = Card(Pos[7][0], Pos[7][1], 70, 110)
+        card42.form(screen, forms[3], colors[1], card42.x+xlen, card42.y+ylen)
         ##########
-        card13 = Card(460, 50, 70, 110)
-        card13.form(screen, forms[2], colors[1], card13.x+xlen, card13.y+ylen)
+        card13 = Card(Pos[8][0], Pos[8][1], 70, 110)
+        card13.form(screen, forms[0], colors[2], card13.x+xlen, card13.y+ylen)
         ##########
-        card23 = Card(460, 180, 70, 110)
-        card23.form(screen, forms[0], colors[0], card23.x+xlen, card23.y+ylen)
+        card23 = Card(Pos[9][0], Pos[9][1], 70, 110)
+        card23.form(screen, forms[1], colors[2], card23.x+xlen, card23.y+ylen)
         ##########
-        card33 = Card(460, 310, 70, 110)
-        card33.form(screen, forms[0], colors[2], card33.x+xlen, card33.y+ylen)
+        card33 = Card(Pos[10][0], Pos[10][1], 70, 110)
+        card33.form(screen, forms[2], colors[2], card33.x+xlen, card33.y+ylen)
         ##########
-        card43 = Card(460, 440, 70, 110)
-        card43.form(screen, forms[2], colors[3], card43.x+xlen, card43.y+ylen)
+        card43 = Card(Pos[11][0], Pos[11][1], 70, 110)
+        card43.form(screen, forms[3], colors[2], card43.x+xlen, card43.y+ylen)
         ##########
-        card14 = Card(550, 50, 70, 110)
-        card14.form(screen, forms[1], colors[0], card14.x+xlen, card14.y+ylen)
+        card14 = Card(Pos[12][0], Pos[12][1], 70, 110)
+        card14.form(screen, forms[0], colors[3], card14.x+xlen, card14.y+ylen)
         ##########
-        card24 = Card(550, 180, 70, 110)
-        card24.form(screen, forms[0], colors[1], card24.x+xlen, card24.y+ylen)
+        card24 = Card(Pos[13][0], Pos[13][1], 70, 110)
+        card24.form(screen, forms[1], colors[3], card24.x+xlen, card24.y+ylen)
         ##########
-        card34 = Card(550, 310, 70, 110)
-        card34.form(screen, forms[1], colors[3], card34.x+xlen, card34.y+ylen)
+        card34 = Card(Pos[14][0], Pos[14][1], 70, 110)
+        card34.form(screen, forms[2], colors[3], card34.x+xlen, card34.y+ylen)
         ##########
-        card44 = Card(550, 440, 70, 110)
-        card44.form(screen, forms[3], colors[1], card44.x+xlen, card44.y+ylen)
+        card44 = Card(Pos[15][0], Pos[15][1], 70, 110)
+        card44.form(screen, forms[3], colors[3], card44.x+xlen, card44.y+ylen)
         ##########
-        card15 = Card(640, 50, 70, 110)
-        card15.form(screen, forms[0], colors[3], card15.x+xlen, card15.y+ylen)
+        card15 = Card(Pos[16][0], Pos[16][1], 70, 110)
+        card15.form(screen, forms[0], colors[4], card15.x+xlen, card15.y+ylen)
         ##########
-        card25 = Card(640, 180, 70, 110)
+        card25 = Card(Pos[17][0], Pos[17][1], 70, 110)
         card25.form(screen, forms[1], colors[4], card25.x+xlen, card25.y+ylen)
         ##########
-        card35 = Card(640, 310, 70, 110)
-        card35.form(screen, forms[3], colors[2], card35.x+xlen, card35.y+ylen)
+        card35 = Card(Pos[18][0], Pos[18][1], 70, 110)
+        card35.form(screen, forms[2], colors[4], card35.x+xlen, card35.y+ylen)
         ##########
-        card45 = Card(640, 440, 70, 110)
-        card45.form(screen, forms[1], colors[1], card45.x+xlen, card45.y+ylen)
+        card45 = Card(Pos[19][0], Pos[19][1], 70, 110)
+        card45.form(screen, forms[3], colors[4], card45.x+xlen, card45.y+ylen)
         ##################################################################################
         ##################################################################################
 
@@ -479,7 +485,7 @@ def gamePlayEasyLevels():   # level 1 - 3
             risingScore = victoryFont.render("Score: " + str(score), True, yellow)
             screen.blit(risingScore, (380, 325))
             screen.blit(text,(270,275))
-            if x == 1 and levelLock < 2:
+            if x == 1 and levelLock < 2:    #detecta o nivel em que esta para desbloquear o proximo
                 levelLock = 2
             if x == 2 and levelLock < 3:
                 levelLock = 3
@@ -818,7 +824,7 @@ def gamePlayHardLevels():   # level 4 - 5
                     if card.y >= -100:
                         card.y += 1
                         if card.y > 600:
-                            card.y = -100
+                            card.y = -100        
                 card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
                 if card.isAt(pos_x, pos_y):
                     card.draw(screen, selectColor, 0) # desenha carta com outra cor
