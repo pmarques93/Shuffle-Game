@@ -16,7 +16,7 @@ def menuScreen():
     level3 = Text(450, 360, 100, 30)
     level4 = Text(450, 400, 100, 30)
     level5 = Text(450, 440, 100, 30)
-    unblock = Text(795, 550, 185, 30)
+    unlock = Text(810, 550, 170, 30)
     leave = Text(450, 500, 100, 30)
 
     checkFirstLoop = 0 #so para detetar se é o primeiro loop do jogo
@@ -87,10 +87,10 @@ def menuScreen():
             level5.draw(screen, greenForm, 1, 'Level 5')
             level5.isClickable = False
 
-        if unblock.isAt (pos_x, pos_y):
-            unblock.draw(screen, selectColor, 1, 'Unblock Levels')
+        if unlock.isAt (pos_x, pos_y):
+            unlock.draw(screen, selectColor, 1, 'Unlock Levels')
         else:
-            unblock.draw(screen, yellow, 1, 'Unblock Levels')
+            unlock.draw(screen, yellow, 1, 'Unlock Levels')
         if leave.isAt (pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
         else:
@@ -110,7 +110,7 @@ def menuScreen():
                     x = 4
                 if level5.isAt(pos_x, pos_y) and level5.isClickable:   #fifthLevelScreen
                     x = 5
-                if unblock.isAt(pos_x, pos_y):
+                if unlock.isAt(pos_x, pos_y):
                     levelLock = 5
                 if leave.isAt(pos_x, pos_y):
                     exit()
@@ -145,8 +145,8 @@ def gamePlayEasyLevels():   # level 1 - 3
     #cria botao exit
     leave = Text(20, 550, 100, 30)  
 
-    #cria bota nextLevel no fim
-    nextLevel = Text(20, 500, 140, 30)
+    #cria botao nextLevel no fim
+    nextLevel = Text(20, 500, 135, 30)
 
     if (x == 1):    #level 1 formas e cards
         pygame.mixer.music.set_volume(0.6)
@@ -436,21 +436,18 @@ def gamePlayEasyLevels():   # level 1 - 3
         
         ##################### desenha exit button e score ####################
         leave.draw(screen, yellow, 1, 'Exit')   #desenha botao exit
-        text2 = myFont.render("Level: " + str(x), True, yellow) #cria lvl
+        text2 = myFont.render_to(screen, (20, 50), "Level: " + str(x), yellow) #cria lvl
         if score <= 0:
-            text = myFont.render("Score: 0", True, yellow) #cria score
+            text = myFont.render_to(screen, (20, 20), "Score: 0", yellow) #cria score
         else:
-            text = myFont.render("Score: " + str(score), True, yellow) #cria score
-        screen.blit(text,(20,20))   #desenha score
-        screen.blit(text2,(20,50))   #desenha lvl
+            text = myFont.render_to(screen, (20, 20), "Score: " + str(score), yellow) #cria score
         if leave.isAt(pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
         ##################### desenha exit button e score ####################
 
         ################### desenha a última forma clicked ###################
         if (len(allClicked)) > 0:
-            lastClicked = lastClickedFont.render("- Last form clicked -", True, yellow)
-            screen.blit(lastClicked,(20,250))
+            lastClicked = lastClickedFont.render_to(screen, (15, 250), "- Last form clicked -", yellow)
             pygame.draw.rect(screen, allClicked[-1].geoColor, (50, 275, 70, 70), 1)
             last = Card(0, 0, 0, 0)
             last.form(screen, allClicked[-1].geoForm, allClicked[-1].geoColor, 60, 285)
@@ -462,10 +459,8 @@ def gamePlayEasyLevels():   # level 1 - 3
             helpCard.draw(screen, selectColor, 1, 'help')
         else: 
             helpCard.draw(screen, yellow, 1, 'help') 
-        helpLeft = myFont.render("Helps Left", True, yellow) #cria texto helps left
-        helpLeftNum = myFont.render(str(helpsLeft), True, yellow) #cria texto helps left
-        screen.blit(helpLeft,(870, 495))   #desenha helps left  
-        screen.blit(helpLeftNum,(925, 522))   #desenha helps left     
+        helpLeft = myFont.render_to(screen, (875, 495), "Helps Left", yellow) #cria texto helps left
+        helpLeftNum = myFont.render_to(screen, (925, 522), str(helpsLeft), yellow) #cria texto helps left    
         #botao help ao ser carregado
         if helpBonus:
             for card in cardList:
@@ -481,10 +476,8 @@ def gamePlayEasyLevels():   # level 1 - 3
         if len(cardList) < 2:   #para confirmar se é mesmo o ultimo par escolhido
             for card in cardList:
                 cardList.remove(card)
-            text = victoryFont.render("CONGRATULATIONS", True, yellow) 
-            risingScore = victoryFont.render("Score: " + str(score), True, yellow)
-            screen.blit(risingScore, (380, 325))
-            screen.blit(text,(270,275))
+            text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
+            risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
             if x == 1 and levelLock < 2:    #detecta o nivel em que esta para desbloquear o proximo
                 levelLock = 2
             if x == 2 and levelLock < 3:
@@ -578,8 +571,8 @@ def gamePlayHardLevels():   # level 4 - 5
     #cria botao exit
     leave = Text(20, 550, 100, 30)  
 
-    #cria bota nextLevel no fim
-    nextLevel = Text(20, 500, 140, 30)
+    #cria botao nextLevel no fim
+    nextLevel = Text(20, 500, 135, 30)
 
     if (x == 4):
         pygame.mixer.music.set_volume(0.5)
@@ -757,21 +750,18 @@ def gamePlayHardLevels():   # level 4 - 5
         
         ##################### desenha exit button e score ####################
         leave.draw(screen, yellow, 1, 'Exit')   #desenha botao exit
-        text2 = myFont.render("Level: " + str(x), True, yellow) #cria lvl
+        text2 = myFont.render_to(screen, (20, 50), "Level: " + str(x), yellow) #cria lvl
         if score <= 0:
-            text = myFont.render("Score: 0", True, yellow) #cria score
+            text = myFont.render_to(screen, (20, 20), "Score: 0", yellow) #cria score
         else:
-            text = myFont.render("Score: " + str(score), True, yellow) #cria score
-        screen.blit(text,(20,20))   #desenha score
-        screen.blit(text2,(20,50))   #desenha lvl
+            text = myFont.render_to(screen, (20, 20), "Score: " + str(score), yellow) #cria score
         if leave.isAt(pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
         ##################### desenha exit button e score ####################
 
         ################### desenha a última forma clicked ###################
         if (len(allClicked)) > 0:
-            lastClicked = lastClickedFont.render("- Last form clicked -", True, yellow)
-            screen.blit(lastClicked,(20,250))
+            lastClicked = lastClickedFont.render_to(screen, (15, 250), "- Last form clicked -", yellow)
             pygame.draw.rect(screen, allClicked[-1].geoColor, (50, 275, 70, 70), 1)
             last = Card(0, 0, 0, 0)
             last.form(screen, allClicked[-1].geoForm, allClicked[-1].geoColor, 60, 285)
@@ -783,10 +773,8 @@ def gamePlayHardLevels():   # level 4 - 5
             helpCard.draw(screen, selectColor, 1, 'help')
         else: 
             helpCard.draw(screen, yellow, 1, 'help') 
-        helpLeft = myFont.render("Helps Left", True, yellow) #cria texto helps left
-        helpLeftNum = myFont.render(str(helpsLeft), True, yellow) #cria texto helps left
-        screen.blit(helpLeft,(870, 495))   #desenha helps left  
-        screen.blit(helpLeftNum,(925, 522))   #desenha helps left     
+        helpLeft = myFont.render_to(screen, (875, 495), "Helps Left", yellow) #cria texto helps left
+        helpLeftNum = myFont.render_to(screen, (925, 522), str(helpsLeft), yellow) #cria texto helps left
         #botao help ao ser carregado
         if helpBonus:
             for card in cardList:
@@ -802,10 +790,8 @@ def gamePlayHardLevels():   # level 4 - 5
         if len(cardList) < 2:   #para confirmar se é mesmo o ultimo par escolhido
             for card in cardList:
                 cardList.remove(card)
-            text = victoryFont.render("CONGRATULATIONS", True, yellow) 
-            risingScore = victoryFont.render("Score: " + str(score), True, yellow)
-            screen.blit(risingScore, (380, 325))    #desenha score final
-            screen.blit(text,(270,275))  
+            text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
+            risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
             if x == 4:      #desenha o botao para o prox lvl
                 if nextLevel.isAt(pos_x, pos_y):
                     nextLevel.draw(screen, selectColor, 1, 'Next Level')

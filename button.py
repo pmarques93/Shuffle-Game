@@ -48,16 +48,16 @@ class Card:
 
 class Text(Card):
     def draw (self, screen, color, border, textInput):
-        myFont = pygame.font.Font(pygame.font.get_default_font(), 21)
+        myFont = pygame.freetype.Font("NotoSans-Regular.ttf", 21)
 
         pygame.draw.rect(screen, color, (self.x, self.y, self.xlenght, self.ylenght,), border)
-        self.text = myFont.render(textInput, True, color)
+        
 
         if textInput == 'Exit':
-            self.writeText = screen.blit(self.text,(self.x+29.5,self.y+5))
+            self.text = myFont.render_to(screen, (self.x+35, self.y+6), textInput, color)
         elif textInput == 'help':
-            self.writeText = screen.blit(self.text,(self.x+32,self.y+5))
+            self.text = myFont.render_to(screen, (self.x+32, self.y+6), textInput, color)
         else:
-            self.writeText = screen.blit(self.text,(self.x+13,self.y+5))
+            self.text = myFont.render_to(screen, (self.x+17, self.y+6), textInput, color)
 
 

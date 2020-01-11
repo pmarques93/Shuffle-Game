@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+import pygame.freetype
 
 pygame.init()
 pygame.font.init()
@@ -35,9 +36,9 @@ def compare(form1, form2):
 #define o ecra
 screen = pygame.display.set_mode((1000, 600))
 #fontes
-myFont = pygame.font.Font(pygame.font.get_default_font(), 23)
-lastClickedFont = pygame.font.Font(pygame.font.get_default_font(), 16)
-victoryFont = pygame.font.Font(pygame.font.get_default_font(), 45)
+myFont = pygame.freetype.Font("NotoSans-Regular.ttf", 23)
+lastClickedFont = pygame.freetype.Font("NotoSans-Regular.ttf", 16)
+victoryFont = pygame.freetype.Font("NotoSans-Regular.ttf", 45)
 #imagens
 image = pygame.image.load("shuffle.png")
 #songs
