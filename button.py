@@ -10,6 +10,7 @@ class Card:
         self.ylenght = ylenght
         self.isClicked = False
         self.isClickable = True
+        self.beingClicked = False
 
     def isAt(self, mouseX, mouseY):
         posicao = mouseX > self.x and mouseX < self.x + self.xlenght and mouseY > self.y and mouseY < self.y + self.ylenght
@@ -31,7 +32,19 @@ class Card:
         elif (geoForm == 'circle'):
             pygame.draw.rect(screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
             pygame.draw.circle(screen, self.geoColor, (25+x, 25+y), 30, 0)
-
+    
+    def smallForm(self, screen, geoForm, geoColor, x, y):
+        self.geoForm = geoForm
+        self.geoColor = geoColor
+        if (geoForm == 'square'):
+            pygame.draw.rect(screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.rect(screen, self.geoColor, (x, y, 40, 40), 0)
+        elif (geoForm == 'triangle'):
+            pygame.draw.rect(screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.polygon(screen, self.geoColor, [(x+20, y), (x, y+35), (x+40, y+35)], 0)
+        elif (geoForm == 'circle'):
+            pygame.draw.rect(screen, geoColor, (self.x, self.y, self.xlenght, self.ylenght), 1)
+            pygame.draw.circle(screen, self.geoColor, (20+x, 20+y), 20, 0)       
 
 class Text(Card):
     def draw (self, screen, color, border, textInput):
@@ -42,7 +55,9 @@ class Text(Card):
 
         if textInput == 'Exit':
             self.writeText = screen.blit(self.text,(self.x+29.5,self.y+5))
-        else:
+        elif textInput == 'help':
             self.writeText = screen.blit(self.text,(self.x+32,self.y+5))
+        else:
+            self.writeText = screen.blit(self.text,(self.x+13,self.y+5))
 
 

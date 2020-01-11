@@ -8,6 +8,7 @@ pygame.font.init()
 ############ variaveis globais ###############
 
 global x
+global levelLock
 
 ################# colors #####################
 
