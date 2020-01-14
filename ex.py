@@ -7,6 +7,7 @@ from variables import *
 def menuScreen():
     global x
     global levelLock
+    global checkFirstLoop
     pygame.mixer.music.set_volume(0.2)
     pygame.mixer.music.load('menu song.ogg')
     pygame.mixer.music.play(-1)
@@ -16,10 +17,11 @@ def menuScreen():
     level3 = Text(450, 360, 100, 30)
     level4 = Text(450, 400, 100, 30)
     level5 = Text(450, 440, 100, 30)
+    hardcore = Text(560, 440, 110, 30)
     unlock = Text(810, 550, 170, 30)
     leave = Text(450, 500, 100, 30)
 
-    checkFirstLoop = 0 #so para detetar se é o primeiro loop do jogo
+    
     
     while(x == 0):
         #limpa ecra, e coloca imagem
@@ -27,15 +29,18 @@ def menuScreen():
         #so vai executar este if primeira ve de cada codigo
         mb = pygame.mouse.get_pressed()
 
+        
+
         if checkFirstLoop == 0:
             screen.blit(image, (100, 150))
             pygame.display.flip()
-            time.sleep(3)
+            time.sleep(5)
             for i in range(150):
                 screen.blit(image, (100, 150-i))
                 pygame.display.flip()
                 screen.fill((20,20,20))
             checkFirstLoop += 1
+            
 
         screen.blit(image, (100, 0))
 
@@ -86,15 +91,27 @@ def menuScreen():
         else:
             level5.draw(screen, greenForm, 1, 'Level 5')
             level5.isClickable = False
+        
+        if levelLock > 5:
+            hardcore.isClickable = True
+            if hardcore.isAt (pos_x, pos_y):
+                hardcore.draw(screen, selectColor, 1, 'Hardcore')
+            else:
+                hardcore.draw(screen, yellow, 1, 'Hardcore')
+        else:
+            hardcore.draw(screen, greenForm, 1, 'Hardcore')
+            hardcore.isClickable = False
 
         if unlock.isAt (pos_x, pos_y):
             unlock.draw(screen, selectColor, 1, 'Unlock Levels')
         else:
             unlock.draw(screen, yellow, 1, 'Unlock Levels')
+
         if leave.isAt (pos_x, pos_y):
             leave.draw(screen, selectColor, 1, 'Exit')
         else:
             leave.draw(screen, yellow, 1, 'Exit')
+
         #quando os botoes são clicked
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
@@ -110,10 +127,15 @@ def menuScreen():
                     x = 4
                 if level5.isAt(pos_x, pos_y) and level5.isClickable:   #fifthLevelScreen
                     x = 5
+                if hardcore.isAt(pos_x, pos_y) and hardcore.isClickable:   #hardcoreLevelScreen
+                    x = 5.1
                 if unlock.isAt(pos_x, pos_y):
-                    levelLock = 5
+                    levelLock = 5.1
                 if leave.isAt(pos_x, pos_y):
                     exit()
+
+        
+            
 
         pygame.display.flip()
 
@@ -121,17 +143,24 @@ def menuScreen():
 
 def gamePlayEasyLevels():   # level 1 - 3
     global x, levelLock
-    #varráveis para o score
+    #variáveis para o score
     score = 0
     scoreCount = 0
     scoreFail = 0
 
+
     #tempCount serve para comparar a carta clicked com a última clicked
     tempCount = 0
 
+    #gameWon
+    gameWon = False
+
     #helpBonus var
     helpBonus = False
-    helpsLeft = 3
+    if x == 1:
+        helpsLeft = 3
+    else:
+        helpsLeft = 2
 
     #lista para saber qual foi a última carta clicked
     allClicked = []
@@ -147,6 +176,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     #cria botao nextLevel no fim
     nextLevel = Text(20, 500, 135, 30)
+    nextLevel.isClickable = False
 
     if (x == 1):    #level 1 formas e cards
         pygame.mixer.music.set_volume(0.6)
@@ -400,7 +430,6 @@ def gamePlayEasyLevels():   # level 1 - 3
         screen.fill((20,20,20))
         #define variavel para quando o rato é pressed, define posicao x e y do rato
         pos_x, pos_y = pygame.mouse.get_pos()
-
         ########################### clicks do rato ##########################
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
@@ -428,10 +457,12 @@ def gamePlayEasyLevels():   # level 1 - 3
                     helpBonus = True
                     helpsLeft -= 1
             if nextLevel.isAt(pos_x, pos_y):
-                if event.type == pygame.MOUSEBUTTONUP:
-                    x += 1
+                if event.type == pygame.MOUSEBUTTONUP and nextLevel.isClickable:
                     gameOn = False
-                        
+                    x += 1
+                    
+                    
+
         ########################## clicks do rato ###########################
         
         ##################### desenha exit button e score ####################
@@ -474,21 +505,24 @@ def gamePlayEasyLevels():   # level 1 - 3
         ###########################    victory    ###########################
         #mensagem de vitoria
         if len(cardList) < 2:   #para confirmar se é mesmo o ultimo par escolhido
+            gameWon = True
+            nextLevel.isClickable = True
+            if nextLevel.isAt(pos_x, pos_y):
+                nextLevel.draw(screen, selectColor, 1, 'Next Level')
+            else:
+                nextLevel.draw(screen, yellow, 1, 'Next Level')
             for card in cardList:
                 cardList.remove(card)
             text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
             risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
-            if x == 1 and levelLock < 2:    #detecta o nivel em que esta para desbloquear o proximo
-                levelLock = 2
-            if x == 2 and levelLock < 3:
-                levelLock = 3
+    
+        if gameWon: #deteta o nível em que está para desbloquear o próximo
             if x == 3 and levelLock < 4:
                 levelLock = 4
-            if x > 0:
-                if nextLevel.isAt(pos_x, pos_y):
-                    nextLevel.draw(screen, selectColor, 1, 'Next Level')
-                else:
-                    nextLevel.draw(screen, yellow, 1, 'Next Level')
+            if x == 2 and levelLock < 3:
+                levelLock = 3
+            if x == 1 and levelLock < 2: 
+                levelLock = 2
         ###########################    victory    ###########################
 
         ####################   desenha cartas formas    #####################
@@ -547,7 +581,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 def gamePlayHardLevels():   # level 4 - 5
     global x
     global levelLock
-    #varráveis para o score
+    #variáveis para o score
     score = 0
     scoreCount = 0
     scoreFail = 0
@@ -555,9 +589,19 @@ def gamePlayHardLevels():   # level 4 - 5
     #tempCount serve para comparar a carta clicked com a última clicked
     tempCount = 0
 
+    #timerVariable  #so para o level 5
+    timer = 0.1
+    tempBarra = 0
+    timerGameOver = 350
+    gameOver = False
+    gameWon = False
+
     #helpBonus var
     helpBonus = False
-    helpsLeft = 2
+    if x == 5.1:
+        helpsLeft = 1
+    else:
+        helpsLeft = 2
 
     #lista para saber qual foi a última carta clicked
     allClicked = []
@@ -573,6 +617,7 @@ def gamePlayHardLevels():   # level 4 - 5
 
     #cria botao nextLevel no fim
     nextLevel = Text(20, 500, 135, 30)
+    nextLevel.isClickable = False
 
     if (x == 4):
         pygame.mixer.music.set_volume(0.5)
@@ -580,6 +625,11 @@ def gamePlayHardLevels():   # level 4 - 5
         pygame.mixer.music.play(-1)
 
     if (x == 5):
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.load('level 5 song.ogg')
+        pygame.mixer.music.play(-1)
+    
+    if (x == 5.1):
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.load('level 5 song.ogg')
         pygame.mixer.music.play(-1)
@@ -743,11 +793,27 @@ def gamePlayHardLevels():   # level 4 - 5
                     helpBonus = True
                     helpsLeft -= 1
             if nextLevel.isAt(pos_x, pos_y):
-                if event.type == pygame.MOUSEBUTTONUP:
-                    x += 1
+                if event.type == pygame.MOUSEBUTTONUP and nextLevel.isClickable:
+                    if x == 5:
+                        x += 0.1
+                    else:
+                        x += 1
+                   
+                    
                     gameOn = False
         ########################## clicks do rato ###########################
-        
+
+        ########################## timer lastLevel ##########################
+        #diminui barra e timerGameOver, se <0 é gameOver
+        if x >= 5 and not gameOver and not gameWon:
+            timerGameOver -= timer
+            tempBarra += 0.1
+            
+            pygame.draw.rect(screen, white, (900, 50 + tempBarra, 10, timerGameOver), 0)
+            if timerGameOver < 0.01:
+                gameOver = True
+        ########################## timer lastLevel ##########################
+
         ##################### desenha exit button e score ####################
         leave.draw(screen, yellow, 1, 'Exit')   #desenha botao exit
         text2 = myFont.render_to(screen, (20, 50), "Level: " + str(x), yellow) #cria lvl
@@ -785,34 +851,72 @@ def gamePlayHardLevels():   # level 4 - 5
                 helpBonus = False
         ############################ help button ############################
 
-        ###########################    victory    ###########################
+        #####################    victory or gameover    #####################
         #mensagem de vitoria
-        if len(cardList) < 2:   #para confirmar se é mesmo o ultimo par escolhido
-            for card in cardList:
-                cardList.remove(card)
-            text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
-            risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
-            if x == 4:      #desenha o botao para o prox lvl
-                if nextLevel.isAt(pos_x, pos_y):
-                    nextLevel.draw(screen, selectColor, 1, 'Next Level')
-                else:
-                    nextLevel.draw(screen, yellow, 1, 'Next Level')
-                if levelLock < 5: 
-                    levelLock = 5
-        ###########################   victory    ############################
+        if len(cardList) < 2 and not gameOver:   #para confirmar se é mesmo o ultimo par escolhido
+            if x == 4 or x == 5:
+                gameWon = True
+                for card in cardList:
+                    cardList.remove(card)
+                text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
+                risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
+                nextLevel.isClickable = True
+                if x == 5:
+                    if nextLevel.isAt(pos_x, pos_y):     #desenha o botao para o prox lvl
+                        nextLevel.draw(screen, selectColor, 1, 'Bonus Level')
+                    else:
+                        nextLevel.draw(screen, yellow, 1, 'Bonus Level')
+                    if levelLock == 5:
+                        levelLock = 5.1
+                if x == 4:
+                    if nextLevel.isAt(pos_x, pos_y):     #desenha o botao para o prox lvl
+                        nextLevel.draw(screen, selectColor, 1, 'Last Level')
+                    else:
+                        nextLevel.draw(screen, yellow, 1, 'Last Level')
+                    if levelLock < 5: 
+                        levelLock = 5
+            elif x == 5.1:
+                gameWon = True
+                for card in cardList:
+                    cardList.remove(card)
+                text = victoryFont.render_to(screen, (280, 275), "YOU BEAT THE GAME :)", yellow) 
+                risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
+        elif gameOver:     #se for o level 5 (last leve)
+                for card in cardList:
+                    cardList.remove(card)
+                text = victoryFont.render_to(screen, (280, 275), "You lose, newbie =(", yellow) 
+                risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
+            
+        #####################   victory or gameover    ######################
 
 
         ####################   desenha cartas formas    #####################
         for card in cardList:   #para todas as cartas na card list
             if card.isClicked == False:
-                if x == 5:
+                if x == 5:  #para o level 5
                     #efeito para mexer as cartas
                     if card.y >= -100:
                         card.y += 1
                         if card.y > 600:
-                            card.y = -100        
-                card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
-                if card.isAt(pos_x, pos_y):
+                            card.y = -100   
+                if x == 5.1:    #level 5 hardcore
+                    if card.x > 300 and card.x < 400 or card.x > 500 and card.x < 550 or card.x > 650 and card.x < 800:
+                        card.y += 1
+                        if card.y > 600:
+                            card.y = -100
+                    else:
+                        card.y -= 1
+                        if card.y < -100:
+                            card.y = 600
+
+                if x == 5.1:
+                    card.draw(screen, red, 0)
+                else:    
+                    card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
+                if x == 5.1:
+                    if card.isAt(pos_x, pos_y):
+                        card.draw(screen, selectRed, 0)
+                elif card.isAt(pos_x, pos_y):
                     card.draw(screen, selectColor, 0) # desenha carta com outra cor
                     if card.beingClicked:
                         card.draw(screen, beingClicked, 0)
@@ -823,11 +927,20 @@ def gamePlayHardLevels():   # level 4 - 5
                 card.smallForm(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen) #desenha forma
                 card.isClickable = False
                 #efeito para mexer as cartas
-                if x == 5:                
+                if x == 5:  #para o level 5
                     if card.y >= -100:
                         card.y += 1
                         if card.y > 600:
                             card.y = -100
+                if x == 5.1:    #level 5 hardcore
+                    if card.x > 300 and card.x < 400 or card.x > 500 and card.x < 550 or card.x > 650 and card.x < 800:
+                        card.y += 1
+                        if card.y > 600:
+                            card.y = -100
+                    else:
+                        card.y -= 1
+                        if card.y < -100:
+                            card.y = 600
 
         ####################   desenha cartas formas    #####################
         
@@ -845,6 +958,10 @@ def gamePlayHardLevels():   # level 4 - 5
                 score += 100    #adiciona 100 score, aumenta o score count
                 scoreCount += 1        
                 tempCount = 0
+                if x >= 5:
+                    tempBarra -= 10
+                    timerGameOver += 10 #recupera 10 de tempo
+                    pass
             else:
                 pygame.display.flip()
                 pygame.time.delay(250)
@@ -869,10 +986,10 @@ def gamePlayHardLevels():   # level 4 - 5
 ###########################       main        #########################################
 
 def main ():
-    global x
-    global levelLock
-    #menuScreen()
+    global x, levelLock, checkFirstLoop
+
     x = 0
+    checkFirstLoop = 0 #so para detetar se é o primeiro loop do jogo
     levelLock = 1
     while (True):
 

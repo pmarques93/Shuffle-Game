@@ -57,6 +57,10 @@ class Text(Card):
             self.text = myFont.render_to(screen, (self.x+35, self.y+6), textInput, color)
         elif textInput == 'help':
             self.text = myFont.render_to(screen, (self.x+32, self.y+6), textInput, color)
+        elif textInput == 'Hardcore':
+            self.text = myFont.render_to(screen, (self.x+9, self.y+6), textInput, color)
+        elif textInput == 'Bonus Level':
+            self.text = myFont.render_to(screen, (self.x+8, self.y+6), textInput, color)     
         else:
             self.text = myFont.render_to(screen, (self.x+17, self.y+6), textInput, color)
 
