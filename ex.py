@@ -631,9 +631,8 @@ def gamePlayHardLevels():   # level 4 - 5
     
     if (x == 5.1):
         pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.load('level 5 song.ogg')
+        pygame.mixer.music.load('level 5.1 song.ogg')
         pygame.mixer.music.play(-1)
-
 
     #variavel que define metade do tamanho das cartas
     xlen, ylen = 10, 25
@@ -765,7 +764,6 @@ def gamePlayHardLevels():   # level 4 - 5
         #define variavel para quando o rato é pressed, define posicao x e y do rato
         pos_x, pos_y = pygame.mouse.get_pos()
 
-
         ########################### clicks do rato ##########################
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
@@ -798,8 +796,6 @@ def gamePlayHardLevels():   # level 4 - 5
                         x += 0.1
                     else:
                         x += 1
-                   
-                    
                     gameOn = False
         ########################## clicks do rato ###########################
 
@@ -810,6 +806,8 @@ def gamePlayHardLevels():   # level 4 - 5
             tempBarra += 0.1
             
             pygame.draw.rect(screen, white, (900, 50 + tempBarra, 10, timerGameOver), 0)
+            if timerGameOver < 50:
+                pygame.draw.rect(screen, red, (900, 50 + tempBarra, 10, timerGameOver), 0)
             if timerGameOver < 0.01:
                 gameOver = True
         ########################## timer lastLevel ##########################
@@ -881,11 +879,13 @@ def gamePlayHardLevels():   # level 4 - 5
                     cardList.remove(card)
                 text = victoryFont.render_to(screen, (280, 275), "YOU BEAT THE GAME :)", yellow) 
                 risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
-        elif gameOver:     #se for o level 5 (last leve)
+
+        elif gameOver:     #se for o level 5 ou 5.1(last level)
                 for card in cardList:
                     cardList.remove(card)
                 text = victoryFont.render_to(screen, (280, 275), "You lose, newbie =(", yellow) 
                 risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
+                pygame.mixer.music.fadeout(2000)
             
         #####################   victory or gameover    ######################
 
