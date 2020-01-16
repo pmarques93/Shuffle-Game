@@ -179,7 +179,7 @@ def gamePlayEasyLevels():   # level 1 - 3
     nextLevel.isClickable = False
 
     if (x == 1):    #level 1 formas e cards
-        pygame.mixer.music.set_volume(0.6)
+        pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.load('level 1 song.ogg')
         pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
@@ -630,7 +630,7 @@ def gamePlayHardLevels():   # level 4 - 5
         pygame.mixer.music.play(-1)
     
     if (x == 5.1):
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0.7)
         pygame.mixer.music.load('level 5.1 song.ogg')
         pygame.mixer.music.play(-1)
 
