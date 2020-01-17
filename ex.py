@@ -29,10 +29,9 @@ def menuScreen():
         #so vai executar este if primeira ve de cada codigo
         mb = pygame.mouse.get_pressed()
 
-        
-
         if checkFirstLoop == 0:
             screen.blit(image, (100, 150))
+            myFont.render_to(screen, (380, 375), "made by Pedro Marques", white)
             pygame.display.flip()
             time.sleep(5)
             for i in range(150):
@@ -41,7 +40,6 @@ def menuScreen():
                 screen.fill((20,20,20))
             checkFirstLoop += 1
             
-
         screen.blit(image, (100, 0))
 
         #define x e y do rato
@@ -134,9 +132,6 @@ def menuScreen():
                 if leave.isAt(pos_x, pos_y):
                     exit()
 
-        
-            
-
         pygame.display.flip()
 
 #####################       gamePlayEasyLevels       ##################################
@@ -145,7 +140,6 @@ def gamePlayEasyLevels():   # level 1 - 3
     global x, levelLock
     #variáveis para o score
     score = 0
-    scoreCount = 0
     scoreFail = 0
 
 
@@ -173,10 +167,6 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     #cria botao exit
     leave = Text(20, 550, 100, 30)  
-
-    #cria botao nextLevel no fim
-    nextLevel = Text(20, 500, 135, 30)
-    nextLevel.isClickable = False
 
     if (x == 1):    #level 1 formas e cards
         pygame.mixer.music.set_volume(0.3)
@@ -443,6 +433,7 @@ def gamePlayEasyLevels():   # level 1 - 3
                             buttonSound.play()
                             card.isClicked = True
                             card.isClickable = False
+                            card.score += 20 #vai servier para aumentar o score lose
                             tempCount += 1  #para comparar clicked cards
                             allClicked.append(card)     #adiciona a lista para saber ultimo clickado
                             
@@ -456,10 +447,6 @@ def gamePlayEasyLevels():   # level 1 - 3
                 if event.type == pygame.MOUSEBUTTONUP and helpsLeft > 0:
                     helpBonus = True
                     helpsLeft -= 1
-            if nextLevel.isAt(pos_x, pos_y):
-                if event.type == pygame.MOUSEBUTTONUP and nextLevel.isClickable:
-                    gameOn = False
-                    x += 1
                     
                     
 
@@ -485,7 +472,7 @@ def gamePlayEasyLevels():   # level 1 - 3
         ################### desenha a última forma clicked ###################
 
         ############################ help button ############################
-        #desenha botao help quando rato ta por cima ou nao
+        #desenha botao help quando rato esta por cima ou nao (para os niveis abaixo de hardcore)
         if helpCard.isAt(pos_x, pos_y):
             helpCard.draw(screen, selectColor, 1, 'help')
         else: 
@@ -506,11 +493,6 @@ def gamePlayEasyLevels():   # level 1 - 3
         #mensagem de vitoria
         if len(cardList) < 2:   #para confirmar se é mesmo o ultimo par escolhido
             gameWon = True
-            nextLevel.isClickable = True
-            if nextLevel.isAt(pos_x, pos_y):
-                nextLevel.draw(screen, selectColor, 1, 'Next Level')
-            else:
-                nextLevel.draw(screen, yellow, 1, 'Next Level')
             for card in cardList:
                 cardList.remove(card)
             text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
@@ -531,7 +513,7 @@ def gamePlayEasyLevels():   # level 1 - 3
                 card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
                 if card.isAt(pos_x, pos_y):
                     card.draw(screen, selectColor, 0) # desenha carta com outra cor
-                    if card.beingClicked:
+                    if card.beingClicked:   # muda cor ao estar a ser carregada
                         card.draw(screen, beingClicked, 0)
                 else:
                     card.beingClicked = False
@@ -548,24 +530,30 @@ def gamePlayEasyLevels():   # level 1 - 3
         if tempCount == 2:
             if compare(allClicked[-1], allClicked[-2]): #compara geo form e geocolor
                 pygame.display.flip()
-                pygame.time.delay(1000)
+                pygame.time.delay(750)
                 for card in cardList:
                     if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a umas das comparadas
                         cardList.remove(card)             
-                score += 100    #adiciona 100 score, aumenta o score count
-                scoreCount += 1        
+                score += 100    #adiciona 100 score, aumenta o score count        
                 tempCount = 0
             else:
                 pygame.display.flip()
-                pygame.time.delay(1000)
+                pygame.time.delay(750)
                 for card in cardList:   # se nao eram iguais, vai fazer "reset" às cartas
-                    if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a uma das cmparadas
+                    if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a uma das comparadas
                         card.isClicked = False
                         card.isClickable = True
                 ##se o jogador ja pontuou, tira +20 score cada erro
-                if scoreCount > 0: # se ja pontuou antes
-                    scoreFail += 20 # todas as vezes que falha perde +20
-                    score -= scoreFail
+                if score > 0: # se ja pontuou antes
+                    if allClicked[-1].score == 20 or allClicked[-2].score == 20: # quando clicka na mesma carta perde +20 cada vez
+                        scoreFail = 20
+                    if allClicked[-1].score == 40 or allClicked[-2].score == 40: # quando clicka na mesma carta perde +40 cada vez
+                        scoreFail = 40
+                    if allClicked[-1].score == 60 or allClicked[-2].score == 60: # quando clicka na mesma carta perde +60 cada vez
+                        scoreFail = 60
+                    if allClicked[-1].score == 80 or allClicked[-2].score == 80: # quando clicka na mesma carta perde +80 cada vez
+                        scoreFail = 80
+                score -= scoreFail
                 tempCount = 0
         
         if tempCount == 0:  #corrige um bug em que as cartas por vezes nao eram removidas da lista
@@ -583,7 +571,6 @@ def gamePlayHardLevels():   # level 4 - 5
     global levelLock
     #variáveis para o score
     score = 0
-    scoreCount = 0
     scoreFail = 0
 
     #tempCount serve para comparar a carta clicked com a última clicked
@@ -598,10 +585,7 @@ def gamePlayHardLevels():   # level 4 - 5
 
     #helpBonus var
     helpBonus = False
-    if x == 5.1:
-        helpsLeft = 1
-    else:
-        helpsLeft = 2
+    helpsLeft = 2
 
     #lista para saber qual foi a última carta clicked
     allClicked = []
@@ -614,10 +598,6 @@ def gamePlayHardLevels():   # level 4 - 5
 
     #cria botao exit
     leave = Text(20, 550, 100, 30)  
-
-    #cria botao nextLevel no fim
-    nextLevel = Text(20, 500, 135, 30)
-    nextLevel.isClickable = False
 
     if (x == 4):
         pygame.mixer.music.set_volume(0.5)
@@ -777,6 +757,7 @@ def gamePlayHardLevels():   # level 4 - 5
                             buttonSound.play()
                             card.isClicked = True
                             card.isClickable = False
+                            card.score += 20 #vai servier para aumentar o score lose
                             tempCount += 1  #para comparar clicked cards
                             allClicked.append(card)     #adiciona a lista para saber ultimo clickado
                             
@@ -790,13 +771,6 @@ def gamePlayHardLevels():   # level 4 - 5
                 if event.type == pygame.MOUSEBUTTONUP and helpsLeft > 0:
                     helpBonus = True
                     helpsLeft -= 1
-            if nextLevel.isAt(pos_x, pos_y):
-                if event.type == pygame.MOUSEBUTTONUP and nextLevel.isClickable:
-                    if x == 5:
-                        x += 0.1
-                    else:
-                        x += 1
-                    gameOn = False
         ########################## clicks do rato ###########################
 
         ########################## timer lastLevel ##########################
@@ -832,21 +806,22 @@ def gamePlayHardLevels():   # level 4 - 5
         ################### desenha a última forma clicked ###################
 
         ############################ help button ############################
-        #desenha botao help quando rato ta por cima ou nao
-        if helpCard.isAt(pos_x, pos_y):
-            helpCard.draw(screen, selectColor, 1, 'help')
-        else: 
-            helpCard.draw(screen, yellow, 1, 'help') 
-        helpLeft = myFont.render_to(screen, (875, 495), "Helps Left", yellow) #cria texto helps left
-        helpLeftNum = myFont.render_to(screen, (925, 522), str(helpsLeft), yellow) #cria texto helps left
-        #botao help ao ser carregado
-        if helpBonus:
-            for card in cardList:
-                card.draw(screen, black, 0)
-                card.smallForm(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen)
-                pygame.display.flip()
-                pygame.time.delay(50)
-                helpBonus = False
+        #desenha botao help quando rato ta por cima ou nao (para os niveis abaixo de hardcore)
+        if x < 5.1:
+            if helpCard.isAt(pos_x, pos_y):
+                helpCard.draw(screen, selectColor, 1, 'help')
+            else: 
+                helpCard.draw(screen, yellow, 1, 'help') 
+            helpLeft = myFont.render_to(screen, (875, 495), "Helps Left", yellow) #cria texto helps left
+            helpLeftNum = myFont.render_to(screen, (925, 522), str(helpsLeft), yellow) #cria texto helps left
+            #botao help ao ser carregado
+            if helpBonus:
+                for card in cardList:
+                    card.draw(screen, black, 0)
+                    card.smallForm(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen)
+                    pygame.display.flip()
+                    pygame.time.delay(100)
+                    helpBonus = False
         ############################ help button ############################
 
         #####################    victory or gameover    #####################
@@ -858,27 +833,19 @@ def gamePlayHardLevels():   # level 4 - 5
                     cardList.remove(card)
                 text = victoryFont.render_to(screen, (280, 275), "CONGRATULATIONS", yellow) 
                 risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
-                nextLevel.isClickable = True
-                if x == 5:
-                    if nextLevel.isAt(pos_x, pos_y):     #desenha o botao para o prox lvl
-                        nextLevel.draw(screen, selectColor, 1, 'Bonus Level')
-                    else:
-                        nextLevel.draw(screen, yellow, 1, 'Bonus Level')
-                    if levelLock == 5:
+
+            if gameWon: #deteta o nível em que está para desbloquear o próximo
+                    if x == 5 and levelLock < 5.1:
                         levelLock = 5.1
-                if x == 4:
-                    if nextLevel.isAt(pos_x, pos_y):     #desenha o botao para o prox lvl
-                        nextLevel.draw(screen, selectColor, 1, 'Last Level')
-                    else:
-                        nextLevel.draw(screen, yellow, 1, 'Last Level')
-                    if levelLock < 5: 
+                    if x == 4 and levelLock < 5:
                         levelLock = 5
-            elif x == 5.1:
+
+            if x == 5.1:
                 gameWon = True
                 for card in cardList:
                     cardList.remove(card)
                 text = victoryFont.render_to(screen, (280, 275), "YOU BEAT THE GAME :)", yellow) 
-                risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)
+                risingScore = victoryFont.render_to(screen, (390, 325), "Score: " + str(score), yellow)    
 
         elif gameOver:     #se for o level 5 ou 5.1(last level)
                 for card in cardList:
@@ -899,29 +866,29 @@ def gamePlayHardLevels():   # level 4 - 5
                         card.y += 1
                         if card.y > 600:
                             card.y = -100   
-                if x == 5.1:    #level 5 hardcore
+                if x == 5.1:    #level 5.1 hardcore umas colunas baixo
                     if card.x > 300 and card.x < 400 or card.x > 500 and card.x < 550 or card.x > 650 and card.x < 800:
                         card.y += 1
                         if card.y > 600:
                             card.y = -100
-                    else:
+                    else:   # para as outras colunas, mete as cartas a andar para cima
                         card.y -= 1
                         if card.y < -100:
                             card.y = 600
-
-                if x == 5.1:
-                    card.draw(screen, red, 0)
-                else:    
-                    card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
-                if x == 5.1:
                     if card.isAt(pos_x, pos_y):
                         card.draw(screen, selectRed, 0)
-                elif card.isAt(pos_x, pos_y):
-                    card.draw(screen, selectColor, 0) # desenha carta com outra cor
-                    if card.beingClicked:
-                        card.draw(screen, beingClicked, 0)
-                else:
-                    card.beingClicked = False
+                    else:
+                        card.draw(screen, red, 0)
+
+                else:    #desenha para o level 4 e level 5
+                    card.draw(screen, green, 0)  #se nao foi clickada desenha a carta
+  
+                    if card.isAt(pos_x, pos_y):
+                        card.draw(screen, selectColor, 0) # desenha carta com outra cor
+                        if card.beingClicked:
+                            card.draw(screen, beingClicked, 0)
+                    else:
+                        card.beingClicked = False
         
             if card.isClicked:  # se carta ja foi selecionada
                 card.smallForm(screen, card.geoForm, card.geoColor, card.x+xlen, card.y+ylen) #desenha forma
@@ -932,7 +899,7 @@ def gamePlayHardLevels():   # level 4 - 5
                         card.y += 1
                         if card.y > 600:
                             card.y = -100
-                if x == 5.1:    #level 5 hardcore
+                if x == 5.1:    #level 5.1 hardcore
                     if card.x > 300 and card.x < 400 or card.x > 500 and card.x < 550 or card.x > 650 and card.x < 800:
                         card.y += 1
                         if card.y > 600:
@@ -955,13 +922,11 @@ def gamePlayHardLevels():   # level 4 - 5
                 for card in cardList:
                     if card == allClicked[-1] or card == allClicked[-2]: #se a carta for igual a umas das comparadas
                         cardList.remove(card)             
-                score += 100    #adiciona 100 score, aumenta o score count
-                scoreCount += 1        
+                score += 100    #adiciona 100 score, aumenta o score count 
                 tempCount = 0
                 if x >= 5:
-                    tempBarra -= 10
-                    timerGameOver += 10 #recupera 10 de tempo
-                    pass
+                    tempBarra -= 25
+                    timerGameOver += 25 #recupera 25 de tempo
             else:
                 pygame.display.flip()
                 pygame.time.delay(250)
@@ -970,9 +935,16 @@ def gamePlayHardLevels():   # level 4 - 5
                         card.isClicked = False
                         card.isClickable = True
                 ##se o jogador ja pontuou, tira +20 score cada erro
-                if scoreCount > 0: # se ja pontuou antes
-                    scoreFail += 20 # todas as vezes que falha perde +20
-                    score -= scoreFail
+                if score > 0: # se ja pontuou antes
+                    if allClicked[-1].score == 20 or allClicked[-2].score == 20: # quando clicka na mesma carta perde +20 cada vez
+                        scoreFail = 20
+                    if allClicked[-1].score == 40 or allClicked[-2].score == 40: # quando clicka na mesma carta perde +40 cada vez
+                        scoreFail = 40
+                    if allClicked[-1].score == 60 or allClicked[-2].score == 60: # quando clicka na mesma carta perde +60 cada vez
+                        scoreFail = 60
+                    if allClicked[-1].score == 80 or allClicked[-2].score == 80: # quando clicka na mesma carta perde +80 cada vez
+                        scoreFail = 80
+                score -= scoreFail
                 tempCount = 0
         
         if tempCount == 0:  #corrige um bug em que as cartas por vezes nao eram removidas da lista

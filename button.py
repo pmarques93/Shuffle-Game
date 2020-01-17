@@ -11,6 +11,7 @@ class Card:
         self.isClicked = False
         self.isClickable = True
         self.beingClicked = False
+        self.score = 0
 
     def isAt(self, mouseX, mouseY):
         posicao = mouseX > self.x and mouseX < self.x + self.xlenght and mouseY > self.y and mouseY < self.y + self.ylenght
@@ -49,9 +50,7 @@ class Card:
 class Text(Card):
     def draw (self, screen, color, border, textInput):
         myFont = pygame.freetype.Font("NotoSans-Regular.ttf", 21)
-
         pygame.draw.rect(screen, color, (self.x, self.y, self.xlenght, self.ylenght,), border)
-        
 
         if textInput == 'Exit':
             self.text = myFont.render_to(screen, (self.x+35, self.y+6), textInput, color)
@@ -59,8 +58,6 @@ class Text(Card):
             self.text = myFont.render_to(screen, (self.x+32, self.y+6), textInput, color)
         elif textInput == 'Hardcore':
             self.text = myFont.render_to(screen, (self.x+9, self.y+6), textInput, color)
-        elif textInput == 'Bonus Level':
-            self.text = myFont.render_to(screen, (self.x+8, self.y+6), textInput, color)     
         else:
             self.text = myFont.render_to(screen, (self.x+17, self.y+6), textInput, color)
 
