@@ -15,7 +15,7 @@ A penalização do *score* aumenta de 20 em 20.
 Após o jogador conseguir combinar todas as cartas, o nível termina e é desbloqueado o próximo nível.
 
 Para os níveis mais avançados, existe um *timer*, existindo assim a possibilidade de perder o jogo.
-- É possível perder o jogo nos níveis 5 e 5.1, caso o jogador deixe chegar o *timer* ao fim.
+- É possível perder o jogo nos níveis 5 e 5.1, caso o jogador deixe o *timer* chegar ao fim.
 - Caso o jogador consiga combinar o par, ganha um bónus no *timer*.
 
 ---
