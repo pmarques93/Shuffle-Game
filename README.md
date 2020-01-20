@@ -121,4 +121,10 @@ O *smallForm* é semelhante ao *form* mas para as cartas mais pequenas.
 
 ----
 
+## Conclusão
+
+Durante o desenvolvimento do projecto, surgiram várias dificuldades, contudo, consegui ultrapassar as mesmas chegando ao objectivo final. Este projecto, apesar de pequeno e não ter um elevado nível de complexidade, ajudou-me bastante a desenvolver a compreensão de *Python* a compreender a estrutura de um pequeno jogo como o *Shuffle*.
+
+---
+
 Pedro Marques, 21900253
