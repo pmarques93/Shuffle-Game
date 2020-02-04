@@ -127,4 +127,4 @@ Durante o desenvolvimento do projecto, surgiram várias dificuldades, contudo, c
 
 ---
 
-Pedro Marques, 21900253
+Pedro Marques
