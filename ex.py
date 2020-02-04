@@ -24,6 +24,7 @@ def menuScreen():
     
     
     while(x == 0):
+        clock.tick(FRAMERATE)
         #limpa ecra, e coloca imagem
         screen.fill((20,20,20))
         #so vai executar este if primeira ve de cada codigo
@@ -35,6 +36,7 @@ def menuScreen():
             pygame.display.flip()
             time.sleep(5)
             for i in range(150):
+                clock.tick(FRAMERATE)
                 screen.blit(image, (100, 150-i))
                 pygame.display.flip()
                 screen.fill((20,20,20))
@@ -417,6 +419,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     gameOn = True
     while(gameOn):
+        clock.tick(FRAMERATE)
         screen.fill((20,20,20))
         #define variavel para quando o rato é pressed, define posicao x e y do rato
         pos_x, pos_y = pygame.mouse.get_pos()
@@ -740,6 +743,7 @@ def gamePlayHardLevels():   # level 4 - 5
 
     gameOn = True
     while(gameOn):
+        clock.tick(FRAMERATE)
         screen.fill((20,20,20))
         #define variavel para quando o rato é pressed, define posicao x e y do rato
         pos_x, pos_y = pygame.mouse.get_pos()
@@ -958,7 +962,9 @@ def gamePlayHardLevels():   # level 4 - 5
 ###########################       main        #########################################
 
 def main ():
-    global x, levelLock, checkFirstLoop
+    global x, levelLock, checkFirstLoop, FRAMERATE, clock
+    FRAMERATE = 90
+    clock = pygame.time.Clock()
 
     x = 0
     checkFirstLoop = 0 #so para detetar se é o primeiro loop do jogo

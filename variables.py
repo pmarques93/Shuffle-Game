@@ -10,6 +10,8 @@ pygame.font.init()
 
 global x
 global levelLock
+global FRAMERATE
+global clock
 
 ################# colors #####################
 
