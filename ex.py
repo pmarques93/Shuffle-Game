@@ -792,9 +792,9 @@ def gamePlayHardLevels():   # level 4 - 5
             timerGameOver -= timer
             tempBarra += 0.1
             
-            pygame.draw.rect(screen, white, (930, 60 + tempBarra, 10, timerGameOver), 0)
+            pygame.draw.rect(screen, white, (920, 60 + tempBarra, 10, timerGameOver), 0)
             if timerGameOver < 50:
-                pygame.draw.rect(screen, red, (930, 60 + tempBarra, 10, timerGameOver), 0)
+                pygame.draw.rect(screen, red, (920, 60 + tempBarra, 10, timerGameOver), 0)
             if timerGameOver < 0.01:
                 gameOver = True
         ########################## timer lastLevel ##########################
