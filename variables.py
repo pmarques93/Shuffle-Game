@@ -40,13 +40,13 @@ def compare(form1, form2):
 #define o ecra
 screen = pygame.display.set_mode((1000, 600))
 #fontes
-myFont = pygame.freetype.Font("NotoSans-Regular.ttf", 23)
-lastClickedFont = pygame.freetype.Font("NotoSans-Regular.ttf", 16)
-victoryFont = pygame.freetype.Font("NotoSans-Regular.ttf", 45)
+myFont = pygame.freetype.Font("fonts/NotoSans-Regular.ttf", 23)
+lastClickedFont = pygame.freetype.Font("fonts/NotoSans-Regular.ttf", 16)
+victoryFont = pygame.freetype.Font("fonts/NotoSans-Regular.ttf", 45)
 #imagens
-image = pygame.image.load("shuffle.png")
+image = pygame.image.load("images/shuffle.png")
 #songs
-buttonSound = pygame.mixer.Sound("button sound.ogg")
+buttonSound = pygame.mixer.Sound("sounds/button sound.ogg")
 
 
     

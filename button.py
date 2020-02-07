@@ -49,7 +49,7 @@ class Card:
 
 class Text(Card):
     def draw (self, screen, color, border, textInput):
-        myFont = pygame.freetype.Font("NotoSans-Regular.ttf", 21)
+        myFont = pygame.freetype.Font("fonts/NotoSans-Regular.ttf", 21)
         pygame.draw.rect(screen, color, (self.x, self.y, self.xlenght, self.ylenght,), border)
 
         if textInput == 'Exit':
