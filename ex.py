@@ -9,7 +9,7 @@ def menuScreen():
     global levelLock
     global checkFirstLoop
     pygame.mixer.music.set_volume(0.2)
-    pygame.mixer.music.load('menu song.ogg')
+    pygame.mixer.music.load('sounds/menu song.ogg')
     pygame.mixer.music.play(-1)
     #cria os botoes de texto 
     level1 = Text(450, 280, 100, 30)
@@ -115,6 +115,8 @@ def menuScreen():
         #quando os botoes são clicked
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
+                pygame.font.quit()
+                pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONUP:
                 if level1.isAt(pos_x, pos_y) and level1.isClickable:   #firstLevelScreen
@@ -132,6 +134,8 @@ def menuScreen():
                 if unlock.isAt(pos_x, pos_y):
                     levelLock = 5.1
                 if leave.isAt(pos_x, pos_y):
+                    pygame.font.quit()
+                    pygame.quit()
                     exit()
 
         pygame.display.flip()
@@ -172,7 +176,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     if (x == 1):    #level 1 formas e cards
         pygame.mixer.music.set_volume(0.3)
-        pygame.mixer.music.load('level 1 song.ogg')
+        pygame.mixer.music.load('sounds/level 1 song.ogg')
         pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 25, 50
@@ -241,7 +245,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     if (x == 2):    # level2 formas e cards
         pygame.mixer.music.set_volume(0.2)
-        pygame.mixer.music.load('level 2 song.ogg')
+        pygame.mixer.music.load('sounds/level 2 song.ogg')
         pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 10, 30
@@ -324,7 +328,7 @@ def gamePlayEasyLevels():   # level 1 - 3
 
     if (x == 3):    # level3 formas e cards
         pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.load('level 3 song.ogg')
+        pygame.mixer.music.load('sounds/level 3 song.ogg')
         pygame.mixer.music.play(-1)
         #variavel que define metade do tamanho das cartas
         xlen, ylen = 10, 30
@@ -426,6 +430,8 @@ def gamePlayEasyLevels():   # level 1 - 3
         ########################### clicks do rato ##########################
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
+                pygame.font.quit()
+                pygame.quit()
                 exit()
             for card in cardList:
                 if card.isAt(pos_x, pos_y):
@@ -604,17 +610,17 @@ def gamePlayHardLevels():   # level 4 - 5
 
     if (x == 4):
         pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.load('level 4 song.ogg')
+        pygame.mixer.music.load('sounds/level 4 song.ogg')
         pygame.mixer.music.play(-1)
 
     if (x == 5):
         pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.load('level 5 song.ogg')
+        pygame.mixer.music.load('sounds/level 5 song.ogg')
         pygame.mixer.music.play(-1)
     
     if (x == 5.1):
         pygame.mixer.music.set_volume(0.7)
-        pygame.mixer.music.load('level 5.1 song.ogg')
+        pygame.mixer.music.load('sounds/level 5.1 song.ogg')
         pygame.mixer.music.play(-1)
 
     #variavel que define metade do tamanho das cartas
@@ -751,6 +757,8 @@ def gamePlayHardLevels():   # level 4 - 5
         ########################### clicks do rato ##########################
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
+                pygame.font.quit()
+                pygame.quit()
                 exit()
             for card in cardList:
                 if card.isAt(pos_x, pos_y):
@@ -780,12 +788,13 @@ def gamePlayHardLevels():   # level 4 - 5
         ########################## timer lastLevel ##########################
         #diminui barra e timerGameOver, se <0 é gameOver
         if x >= 5 and not gameOver and not gameWon:
+            myFont.render_to(screen, (895, 425), "Timer", white)
             timerGameOver -= timer
             tempBarra += 0.1
             
-            pygame.draw.rect(screen, white, (900, 50 + tempBarra, 10, timerGameOver), 0)
+            pygame.draw.rect(screen, white, (930, 60 + tempBarra, 10, timerGameOver), 0)
             if timerGameOver < 50:
-                pygame.draw.rect(screen, red, (900, 50 + tempBarra, 10, timerGameOver), 0)
+                pygame.draw.rect(screen, red, (930, 60 + tempBarra, 10, timerGameOver), 0)
             if timerGameOver < 0.01:
                 gameOver = True
         ########################## timer lastLevel ##########################
