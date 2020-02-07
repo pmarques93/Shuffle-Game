@@ -7,7 +7,7 @@ O jogo foi criado com:
 ![shuffle](https://temptempo.yolasite.com/resources/python%20pairs.png)
 
 ## Funcionalidade
-O *Shuffle* é um jogo em que o jogador vira as cartas de modo a juntar 1 par igual. 
+O *Pairs* é um jogo em que o jogador vira as cartas de modo a juntar 1 par igual. 
 - Quando o jogador combina o par certo o *score* aumenta 100 pontos.
 - Quando o jogador combina o par errado, cada vez que que tenta combinar essas mesmas cartas, o *score* é diminuído.
 A penalização do *score* aumenta de 20 em 20.
