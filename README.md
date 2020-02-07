@@ -4,7 +4,7 @@ O jogo foi criado com:
 - *Python*3.6;
 - *Pygame*;
 
-![shuffle](https://temptempo.yolasite.com/resources/Shuffle%20-%20git.png)
+![shuffle](https://temptempo.yolasite.com/resources/python%20pairs.png)
 
 ## Funcionalidade
 O *Shuffle* é um jogo em que o jogador vira as cartas de modo a juntar 1 par igual. 
